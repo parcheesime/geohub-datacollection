@@ -10,7 +10,7 @@ This project aims to collect district boundary files for various political and a
 - City Clerk
 
 ## Data Collection Process
-The data collection process is facilitated using the GeoHub LA County API. This API provides access to geospatial datasets related to Los Angeles County.
+The data collection process is facilitated using the [GeoHub LA County Website](https://geohub.lacity.org/search?collection=Dataset) and district API. This API provides access to geospatial datasets related to Los Angeles County.
 
 ### Steps:
 1. **Authentication**: No Key Necessary
