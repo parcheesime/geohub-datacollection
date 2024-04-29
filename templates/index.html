@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Flask Endpoint</title>
+</head>
+<body>
+    <h1>Test Flask Endpoint</h1>
+    <form id="requestForm">
+        <label for="apiUrl">API URL:</label>
+        <input type="text" id="apiUrl" name="apiUrl"><br><br>
+        <label for="district">District:</label>
+        <input type="text" id="district" name="district"><br><br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('requestForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            const response = await fetch('/fetch-shapefile', {
+                method: 'POST',
+                body: JSON.stringify(Object.fromEntries(formData.entries())),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const responseData = await response.json();
+            document.getElementById('response').textContent = JSON.stringify(responseData);
+        });
+    </script>
+</body>
+</html>
