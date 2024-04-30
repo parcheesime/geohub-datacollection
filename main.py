@@ -1,9 +1,9 @@
 
-from drive_utils.settings import folder_id, my_path
+from drive_utils.settings import FOLDER_ID
 from drive_utils.data_processing import fetch_and_create_shapefile
 from drive_utils import drive_operations
 
-parent_folder_id = folder_id
+parent_folder_id = FOLDER_ID
 
 
 api_urls = {
