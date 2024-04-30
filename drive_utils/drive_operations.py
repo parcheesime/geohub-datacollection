@@ -76,6 +76,7 @@ def create_or_find_subfolder(parent_folder_id, subfolder_name):
 def upload_file_to_drive(folder_id, file_path, file_name):
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaFileUpload
+    
     creds = get_credentials()
     # Initialize the Google Drive API service
     service = build('drive', 'v3', credentials=creds)
@@ -106,15 +107,16 @@ def get_credentials():
     credentials = service_account.Credentials.from_service_account_file(
         token_path, 
         scopes=['https://www.googleapis.com/auth/drive'])
-
     return credentials
 
-def find_file_id(service, folder_id, file_name):
-    """Search for a file by name in a specific folder and return the file ID if it exists."""
-    query = f"'{folder_id}' in parents and name = '{file_name}' and trashed = false"
-    results = service.files().list(q=query, fields="files(id)").execute()
+
+def list_files_in_folder(folder_id):
+    """List all files in a specific folder."""
+    creds = get_credentials()
+    service = build('drive', 'v3', credentials=creds)
+    results = service.files().list(q=f"'{folder_id}' in parents and trashed = false", fields="files(id, name)").execute()
     files = results.get('files', [])
-    return files[0]['id'] if files else None
+    return files
 
 
 def upload_or_replace_file(folder_id, file_path, file_name, creds):
@@ -135,3 +137,26 @@ def upload_or_replace_file(folder_id, file_path, file_name, creds):
         # If the file does not exist, upload it as new
         file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         print(f"Uploaded new file with ID: {file.get('id')}")
+
+
+def get_folder_size(folder_id):
+    """
+    Calculates the total size of all files in a specified Google Drive folder.
+
+    Args:
+    service: Authenticated Google Drive service object.
+    folder_id (str): The ID of the Google Drive folder whose size you want to calculate.
+
+    Returns:
+    int: The total size of the files in the Google Drive folder in bytes.
+    """
+    
+    creds = get_credentials()
+    service = build('drive', 'v3', credentials=creds)
+    
+    total_size = 0
+    results = service.files().list(q=f"'{folder_id}' in parents and trashed = false", fields="files(id, size)").execute()
+    files = results.get('files', [])
+    for file in files:
+        total_size += int(file.get('size', 0))
+    return total_size

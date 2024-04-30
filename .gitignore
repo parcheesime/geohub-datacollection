@@ -5,3 +5,5 @@ __pycache__/
 *.json
 # Ignore NTFS zone identifiers
 *:*Zone.Identifier*
+token.json
+settings.py

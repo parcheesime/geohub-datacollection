@@ -72,23 +72,3 @@ def fetch_and_create_shapefile(api_url, district, parent_folder_id):
                             drive_operations.upload_file_to_drive(district_folder_id, file_path, file_name)
 
                 print(f"Shapefiles for district {district} successfully uploaded to Google Drive.")
-
-
-def get_folder_size(folder_path):
-    """
-    Calculates the total size of all files in a specified directory.
-
-    Args:
-    folder_path (str): The path to the directory whose size you want to calculate.
-
-    Returns:
-    int: The total size of the files in the directory in bytes.
-    """
-    total_size = 0
-    for dirpath, dirnames, filenames in os.walk(folder_path):
-        for f in filenames:
-            # Construct full file path
-            file_path = os.path.join(dirpath, f)
-            # Get file size and add it to total
-            total_size += os.path.getsize(file_path)
-    return total_size

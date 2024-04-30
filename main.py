@@ -1,38 +1,25 @@
-from flask import Flask, request, jsonify, render_template
-from utilities import fetch_and_create_shapefile
 
-app = Flask(__name__)
+import sys
+from drive_utils import settings
+# Manually specify the path to the utilities module
+sys.path.append(settings.my_path)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+from drive_utils.data_processing import fetch_and_create_shapefile
+from drive_utils import drive_operations
 
-@app.route('/fetch-shapefile', methods=['POST'])
-def handle_request():
-    content = request.get_json()
-    if not content or 'apiUrl' not in content or 'district' not in content:
-        return jsonify({'error': 'Missing parameters, please provide both api_url and district'}), 400
+parent_folder_id = settings.folder_id
 
-    api_url = content['apiUrl']
-    district = content['district']
+api_urls = {
+    "assembly": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "bids_city_clerk": 'https://services5.arcgis.com/7nsPwEMP38bSkCjy/arcgis/rest/services/Business_Improvement_Districts/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "city_council": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/13/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "congressional": 'https://arcgis.gis.lacounty.gov/arcgis/rest/services/LACounty_Dynamic/Political_Boundaries/MapServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "neighborhood_council": 'https://services5.arcgis.com/7nsPwEMP38bSkCjy/arcgis/rest/services/Neighborhood_Council_Boundaries_(2018)/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "senate": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/23/query?where=1%3D1&outFields=*&outSR=4326&f=json',
+    "supervisors": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/4/query?where=1%3D1&outFields=*&outSR=4326&f=json'
+}
 
-    # Pass API URL and district to the function and return the response
-    result = fetch_and_create_shapefile(api_url, district)
-    return jsonify(result), 200
-
-@app.route('/display')
-def display():
-    api_url = request.args.get('apiUrl')
-    district = request.args.get('district')
-
-    # Fetch head of the GeoDataFrame using the provided API URL
-    gdf_head = fetch_gdf_head(api_url)
-
-    return render_template('display.html', district=district, gdf_head=gdf_head)
-
-def fetch_gdf_head(api_url):
-    # Your logic to fetch and process head of the GeoDataFrame using the provided API URL
-    pass
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# for district, api_url in api_urls.items():
+#     fetch_and_create_shapefile(api_url, district, parent_folder_id)
+    
+print(drive_operations.list_files_in_folder(parent_folder_id))
