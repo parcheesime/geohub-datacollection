@@ -1,13 +1,10 @@
 
-import sys
-from drive_utils import settings
-# Manually specify the path to the utilities module
-sys.path.append(settings.my_path)
-
+from drive_utils.settings import folder_id, my_path
 from drive_utils.data_processing import fetch_and_create_shapefile
 from drive_utils import drive_operations
 
-parent_folder_id = settings.folder_id
+parent_folder_id = folder_id
+
 
 api_urls = {
     "assembly": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/2/query?where=1%3D1&outFields=*&outSR=4326&f=json',
