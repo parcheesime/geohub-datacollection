@@ -72,28 +72,63 @@ def create_or_find_subfolder(parent_folder_id, subfolder_name):
         return folder.get('id')
 
 
-
 def upload_file_to_drive(folder_id, file_path, file_name):
     from googleapiclient.discovery import build
     from googleapiclient.http import MediaFileUpload
     
     creds = get_credentials()
-    # Initialize the Google Drive API service
     service = build('drive', 'v3', credentials=creds)
 
     # Prepare the file metadata and the media upload object
     file_metadata = {'name': file_name, 'parents': [folder_id]}
     media = MediaFileUpload(file_path, mimetype='application/octet-stream', resumable=True)
 
-    try:
-        # Attempt to upload the file and return the new file ID
-        file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print(f"Uploaded file with ID: {file.get('id')}")
-        return file.get('id')
-    except Exception as e:
-        # Log any errors that occur during the file upload
-        print(f"Failed to upload {file_name}: {e}")
-        return None
+    # Check if a file with the same name exists in the folder
+    query = f"name = '{file_name}' and '{folder_id}' in parents and trashed = false"
+    existing_files = service.files().list(q=query, fields='files(id)').execute().get('files', [])
+
+    if existing_files:
+        # If the file exists, update it
+        file_id = existing_files[0]['id']
+        try:
+            # Update the existing file with the new content
+            file = service.files().update(fileId=file_id, body=file_metadata, media_body=media, fields='id').execute()
+            print(f"Updated file with ID: {file.get('id')}")
+        except Exception as e:
+            print(f"Failed to update {file_name}: {e}")
+            return None
+    else:
+        # If no existing file, upload as new
+        try:
+            file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+            print(f"Uploaded new file with ID: {file.get('id')}")
+            return file.get('id')
+        except Exception as e:
+            print(f"Failed to upload {file_name}: {e}")
+            return None
+
+
+# def upload_file_to_drive(folder_id, file_path, file_name):
+#     from googleapiclient.discovery import build
+#     from googleapiclient.http import MediaFileUpload
+    
+#     creds = get_credentials()
+#     # Initialize the Google Drive API service
+#     service = build('drive', 'v3', credentials=creds)
+
+#     # Prepare the file metadata and the media upload object
+#     file_metadata = {'name': file_name, 'parents': [folder_id]}
+#     media = MediaFileUpload(file_path, mimetype='application/octet-stream', resumable=True)
+
+#     try:
+#         # Attempt to upload the file and return the new file ID
+#         file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
+#         print(f"Uploaded file with ID: {file.get('id')}")
+#         return file.get('id')
+#     except Exception as e:
+#         # Log any errors that occur during the file upload
+#         print(f"Failed to upload {file_name}: {e}")
+#         return None
 
 
 def get_credentials():
