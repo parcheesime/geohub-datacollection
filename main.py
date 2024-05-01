@@ -1,5 +1,5 @@
 
-from drive_utils.settings import FOLDER_ID
+# from drive_utils.settings import FOLDER_ID
 from drive_utils.data_processing import fetch_and_create_shapefile
 from drive_utils import drive_operations
 import os
