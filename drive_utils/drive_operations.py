@@ -108,29 +108,6 @@ def upload_file_to_drive(folder_id, file_path, file_name):
             return None
 
 
-# def upload_file_to_drive(folder_id, file_path, file_name):
-#     from googleapiclient.discovery import build
-#     from googleapiclient.http import MediaFileUpload
-    
-#     creds = get_credentials()
-#     # Initialize the Google Drive API service
-#     service = build('drive', 'v3', credentials=creds)
-
-#     # Prepare the file metadata and the media upload object
-#     file_metadata = {'name': file_name, 'parents': [folder_id]}
-#     media = MediaFileUpload(file_path, mimetype='application/octet-stream', resumable=True)
-
-#     try:
-#         # Attempt to upload the file and return the new file ID
-#         file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-#         print(f"Uploaded file with ID: {file.get('id')}")
-#         return file.get('id')
-#     except Exception as e:
-#         # Log any errors that occur during the file upload
-#         print(f"Failed to upload {file_name}: {e}")
-#         return None
-
-
 def get_credentials():
     """Load credentials from a service account JSON file."""
     # Get the directory of the current script

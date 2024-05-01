@@ -20,8 +20,4 @@ api_urls = {
 
 for district, api_url in api_urls.items():
     fetch_and_create_shapefile(api_url, district, parent_folder_id)
-    
-# print(drive_operations.list_files_in_folder(parent_folder_id))
 
-# Print the value for debugging
-print("DEBUG: The value of FOLDER_ID is:", parent_folder_id)
