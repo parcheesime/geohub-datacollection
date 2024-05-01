@@ -17,7 +17,7 @@ api_urls = {
     "supervisors": 'https://maps.lacity.org/lahub/rest/services/Boundaries/MapServer/4/query?where=1%3D1&outFields=*&outSR=4326&f=json'
 }
 
-# for district, api_url in api_urls.items():
-#     fetch_and_create_shapefile(api_url, district, parent_folder_id)
+for district, api_url in api_urls.items():
+    fetch_and_create_shapefile(api_url, district, parent_folder_id)
     
-print(drive_operations.list_files_in_folder(parent_folder_id))
+# print(drive_operations.list_files_in_folder(parent_folder_id))
