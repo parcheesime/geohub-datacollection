@@ -55,12 +55,12 @@ def fetch_and_create_shapefile(api_url, district, parent_folder_id):
         # Create GeoDataFrame
         gdf = gpd.GeoDataFrame(properties_list, geometry=geometry_list)
         if not gdf.empty:
-                print(gdf.head())  # Display some entries for logging
+                print(gdf.head())
 
                 creds = drive_operations.get_credentials()
                 district_folder_id = drive_operations.create_or_find_subfolder(parent_folder_id, district)
 
-                # Temporarily save the shapefile locally in the /tmp directory
+                # temporarily save the shapefile locally in the /tmp directory
                 with tempfile.TemporaryDirectory() as tmpdir:
                     shapefile_base_path = os.path.join(tmpdir, f"{district}.shp")
                     gdf.to_file(shapefile_base_path, driver='ESRI Shapefile')
@@ -68,7 +68,7 @@ def fetch_and_create_shapefile(api_url, district, parent_folder_id):
                     # Upload each generated file component to Google Drive
                     for file_name in os.listdir(tmpdir):
                         file_path = os.path.join(tmpdir, file_name)
-                        if os.path.isfile(file_path):  # Ensure it's a file
+                        if os.path.isfile(file_path):  
                             drive_operations.upload_file_to_drive(district_folder_id, file_path, file_name)
 
                 print(f"Shapefiles for district {district} successfully uploaded to Google Drive.")

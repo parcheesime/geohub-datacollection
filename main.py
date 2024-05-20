@@ -5,7 +5,8 @@ from drive_utils import drive_operations
 import os
 
 parent_folder_id = os.getenv('FOLDER_ID')
-# parent_folder_id = FOLDER_ID
+
+print(f"FOLDER_ID: {parent_folder_id}")
 
 
 api_urls = {
@@ -20,4 +21,3 @@ api_urls = {
 
 for district, api_url in api_urls.items():
     fetch_and_create_shapefile(api_url, district, parent_folder_id)
-

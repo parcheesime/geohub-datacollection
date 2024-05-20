@@ -46,7 +46,6 @@ def list_contents_of_folder(folder_id):
 
 
 def create_or_find_subfolder(parent_folder_id, subfolder_name):
-    from google.oauth2 import service_account
     from googleapiclient.discovery import build
 
     creds = get_credentials()
@@ -129,26 +128,6 @@ def list_files_in_folder(folder_id):
     results = service.files().list(q=f"'{folder_id}' in parents and trashed = false", fields="files(id, name)").execute()
     files = results.get('files', [])
     return files
-
-
-def upload_or_replace_file(folder_id, file_path, file_name, creds):
-    from googleapiclient.discovery import build
-    from googleapiclient.http import MediaFileUpload
-
-    service = build('drive', 'v3', credentials=creds)
-    file_id = find_file_id(service, folder_id, file_name)
-    
-    file_metadata = {'name': file_name, 'parents': [folder_id]}
-    media = MediaFileUpload(file_path, mimetype='application/octet-stream', resumable=True)
-
-    if file_id:
-        # If the file exists, update it
-        updated_file = service.files().update(fileId=file_id, body=file_metadata, media_body=media).execute()
-        print(f"Updated file with ID: {updated_file.get('id')}")
-    else:
-        # If the file does not exist, upload it as new
-        file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
-        print(f"Uploaded new file with ID: {file.get('id')}")
 
 
 def get_folder_size(folder_id):
