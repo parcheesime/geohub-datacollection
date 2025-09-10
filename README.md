@@ -1,4 +1,7 @@
 # GeoHub LA Data Collection
+> **Note:** This repository has moved.  
+> The active version is now at: [https://github.com/parcheesime/geohub-datacollection](https://github.com/parcheesime/geohub-datacollection)
+
 
 ## Overview
 This project collects **district boundary files** for various political and administrative districts within Los Angeles County.  
