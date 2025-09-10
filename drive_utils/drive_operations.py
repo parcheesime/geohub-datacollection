@@ -77,17 +77,19 @@ def upload_file_to_drive(folder_id, file_path, file_name):
     
     creds = get_credentials()
     service = build('drive', 'v3', credentials=creds)
-
-    # Prepare the file metadata and the media upload object
+    
+    # checking if files need updating
+    
+    # prepare the file metadata and the media upload object
     file_metadata = {'name': file_name, 'parents': [folder_id]}
     media = MediaFileUpload(file_path, mimetype='application/octet-stream', resumable=True)
 
-    # Check if a file with the same name exists in the folder
+    # check if a file with the same name exists in the folder
     query = f"name = '{file_name}' and '{folder_id}' in parents and trashed = false"
     existing_files = service.files().list(q=query, fields='files(id)').execute().get('files', [])
 
     if existing_files:
-        # If the file exists, update it
+        # if file exists, update it
         file_id = existing_files[0]['id']
         try:
             # Update the existing file with the new content
@@ -97,7 +99,7 @@ def upload_file_to_drive(folder_id, file_path, file_name):
             print(f"Failed to update {file_name}: {e}")
             return None
     else:
-        # If no existing file, upload as new
+        # no existing file, upload as new
         try:
             file = service.files().create(body=file_metadata, media_body=media, fields='id').execute()
             print(f"Uploaded new file with ID: {file.get('id')}")

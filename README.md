@@ -1,20 +1,74 @@
+# GeoHub LA Data Collection
+
 ## Overview
-This project aims to collect district boundary files for various political and administrative districts within Los Angeles County. The collected data will be processed into shapefiles and contributed to Hack for LA.
+This project collects **district boundary files** for various political and administrative districts within Los Angeles County.  
+The data is converted into both **raw JSON** and **GeoJSON** formats for easy use in civic tech projects.  
+The processed data will be contributed to **Hack for LA**.
+
+For questions or collaboration, reach out on GitHub: [@parcheesime](https://github.com/parcheesime).
+
+---
 
 ## Districts Covered
 - Assembly
 - Senate
-- Neighborhood
+- Neighborhood Councils
 - Supervisors
 - Congressional
-- City Clerk
+- City Clerk (BIDs)
+- City Council
+
+---
 
 ## Data Collection Process
-The data collection process is facilitated using the [GeoHub LA County Website](https://geohub.lacity.org/search?collection=Dataset) and district API. This API provides access to geospatial datasets related to Los Angeles County.
+The data collection process is facilitated using the [GeoHub LA County Website](https://geohub.lacity.org/search?collection=Dataset) and related ArcGIS APIs.
 
-### Steps:
-1. **Authentication**: No Key Necessary.
-2. **Requesting Data**: Use the appropriate API endpoints to request boundary files for each of the listed districts.
-3. **Data Processing**: Once the boundary files are obtained, they are processed into shapefiles.
-4. **Data Storage**: Shape files to be stored in Hack for L.A. GitHub or [Google Drive](https://drive.google.com/drive/folders/1KsIfAFmp0ArLauvHY1k9wRc9ZXaPDahe).
-5. **Automation**: Use GitHub Actions workflow to automate the retrieval and processing of shape files every other month.
+### Steps
+1. **Authentication**: No key required.  
+2. **Requesting Data**: Python script sends requests to API endpoints for each district.  
+3. **Data Processing**: Responses are saved in two formats:
+   - Raw ArcGIS JSON (`district.json`)
+   - GeoJSON (`district.geojson`)
+4. **Data Storage**: Output files are stored in `shapefiles_output/`.  
+5. **Automation**: A GitHub Actions workflow will be configured to run this process on a weekly or monthly basis via update_shapefiles.yml.
+
+---
+
+## Repository Structure
+
+geohubLA_data_collection/
+│
+├── main.py # Script to fetch and save district shapefiles
+├── shapefiles_output/ # Folder where JSON and GeoJSON outputs are stored
+├── example_usage.ipynb # Jupyter notebook demo of loading and plotting data
+├── requirements.txt # Python dependencies
+└── README.md # Project documentation
+
+
+---
+
+## Installation & Setup
+
+### Clone the repository
+```bash
+git clone https://github.com/<your-org>/geohubLA_data_collection.git
+cd geohubLA_data_collection
+```
+## Installation & Setup
+
+### Create and activate a virtual environment 
+```bash
+python3 -m venv myenv
+source myenv/bin/activate
+```
+
+### install requirements
+```bash
+pip install -r requirements.txt
+```
+
+# Run main and example usage
+```bash
+python main.py
+jupyter notebook example_usage.ipynb
+```
