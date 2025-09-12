@@ -58,19 +58,20 @@ def save_as_geojson(data: dict, filepath: str) -> None:
 def main():
     for district, url in API_URLS.items():
         print(f"Fetching {district} data...")
-        
+
         # Fetch data
         data = fetch_data(url)
-        
+
         # Save raw JSON
         json_path = os.path.join(OUTPUT_DIR, f"{district}.json")
         save_as_json(data, json_path)
         print(f"✅ Saved JSON: {json_path}")
-        
+
         # Save GeoJSON
         geojson_path = os.path.join(OUTPUT_DIR, f"{district}.geojson")
         save_as_geojson(data, geojson_path)
         print(f"✅ Saved GeoJSON: {geojson_path}")
+
 
 if __name__ == "__main__":
     main()
