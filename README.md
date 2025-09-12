@@ -1,6 +1,5 @@
 # GeoHub LA Data Collection
-> **Note:** This repository has moved.  
-> The active version is now at: [https://github.com/parcheesime/geohub-datacollection](https://github.com/parcheesime/geohub-datacollection)
+> **Note:** This repo has been merged into Hack for LA's district-files: [https://github.com/hackforla/district-files]. Ongoing development is there.
 
 
 ## Overview
