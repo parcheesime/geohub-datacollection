@@ -2,8 +2,6 @@ import os
 import requests
 import json
 import geopandas as gpd
-from shapely.geometry import shape
-import geopandas as gpd
 from io import StringIO
 
 # -------------------------------
